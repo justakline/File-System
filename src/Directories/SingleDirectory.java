@@ -7,6 +7,7 @@ import Files.FileOS;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,18 +17,10 @@ public class SingleDirectory extends AbstractDirectory<FileOS>{
         this.name = name;
         this.owner = owner;
         this.directory = new ArrayList<LinkedList<FileOS>>();
+        commands.addAll(Arrays.asList());
     }
 
-    public void addFile(FileOS file){
-        LinkedList<FileOS> list = new LinkedList<FileOS>();
-        list.add(file);
-        directory.add( list );
-    }
-    public void removeFile(FileOS file){
-        LinkedList<FileOS> list = new LinkedList<FileOS>();
-        list.add(file);
-        directory.remove( list );
-    }
+
 
 //Look at each linked list in directory and then look at file in the linked list
     public FileOS findFile(String name){
@@ -52,6 +45,7 @@ public class SingleDirectory extends AbstractDirectory<FileOS>{
         return myString;
     }
 
+
     @Override
     public void add(FileOS file) {
         LinkedList<FileOS> newList = new LinkedList<FileOS>();
@@ -70,7 +64,7 @@ public class SingleDirectory extends AbstractDirectory<FileOS>{
     }
 
     @Override
-    public FileOS search(String name) {
+    public FileOS find(String name) {
         for (LinkedList<FileOS> list : directory){
             for(FileOS file: list){
                 if(file.getName() == name){
