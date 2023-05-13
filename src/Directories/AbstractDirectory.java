@@ -43,11 +43,11 @@ public abstract class AbstractDirectory<T> {
     }
 
 
-    public abstract void add(FileOS file);
+    public abstract void add(String name);
 
 
 
-    public abstract void remove(FileOS file);
+    public abstract void remove(String name);
 
 
 
