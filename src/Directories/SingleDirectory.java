@@ -13,26 +13,24 @@ import java.util.List;
 
 public class SingleDirectory extends AbstractDirectory<FileOS>{
 
-    public SingleDirectory(String name, String owner){
+    public SingleDirectory(String name, String owner){//Coming from initial creation
         this.name = name;
         this.owner = owner;
         this.directory = new ArrayList<LinkedList<FileOS>>();
-        commands.addAll(Arrays.asList());
+//        commands.addAll(Arrays.asList());
+    }
+    public SingleDirectory(String name){ //Coming from Two-Tierd
+
+        this.name = name;
+        this.owner = name;
+        this.directory = new ArrayList<LinkedList<FileOS>>();
+//        commands.addAll(Arrays.asList());
     }
 
 
 
-//Look at each linked list in directory and then look at file in the linked list
-    public FileOS findFile(String name){
-        for(LinkedList<FileOS> list : directory){
-            for (FileOS file : list){
-                if(file.getName() == name){
-                    return file;
-                }
-            }
-        }
-        return null;
-    }
+
+
 
     @Override
     public String listDirectory() {
@@ -51,8 +49,6 @@ public class SingleDirectory extends AbstractDirectory<FileOS>{
     public void add(String name) {
         LinkedList<FileOS> newList = new LinkedList<FileOS>();
         String fileName= name.split("[.]")[0];
-        System.out.println("name " + name);
-        System.out.println("filename " + fileName);;
         String type = name.split("[.]")[1];
         newList.add(new FileOS(fileName, owner, "read", type));
 
@@ -77,6 +73,7 @@ public class SingleDirectory extends AbstractDirectory<FileOS>{
         for (LinkedList<FileOS> list : directory){
             for(FileOS file: list){
                 String fullName = file.getName()+ "." + file.getType();
+                System.out.println("printing " + fullName);
                 if(fullName.equals( name)){ //Split into name and type, so recombine together
 
                     return file;
@@ -84,5 +81,13 @@ public class SingleDirectory extends AbstractDirectory<FileOS>{
             }
         }
         return null;
+    }
+
+    public void addFile(FileOS file){
+        if (find(file.getName()) == null){
+            LinkedList<FileOS> newList = new LinkedList<FileOS>();
+            newList.add(file);
+            directory.add(newList);
+        }
     }
 }
