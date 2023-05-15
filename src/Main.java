@@ -135,19 +135,21 @@ public class Main {
 
     public static void handleREAD(AbstractDirectory directory, List<String> arguments) {
 
-
-        if (arguments.size() == 1) {//Read the entire file
-            String line = handleFIND(directory, arguments).read();
-            System.out.println(line);
-        } else {//Read at linei
-            if ((handleFIND(directory, arguments).getBody()).size() < Integer.valueOf(arguments.get(1))) {// Must not be out of bounds
-                System.out.println("File is too small, no line there. Try a smaller line value");
-            }else{
-                String line = handleFIND(directory, arguments).read(Integer.valueOf(arguments.get(1)));
+        if(handleFIND(directory, arguments).isOpen()) {
+            if (arguments.size() == 1) {//Read the entire file
+                String line = handleFIND(directory, arguments).read();
                 System.out.println(line);
+            } else {//Read at lines
+                if ((handleFIND(directory, arguments).getBody()).size() < Integer.valueOf(arguments.get(1))) {// Must not be out of bounds
+                    System.out.println("File is too small, no line there. Try a smaller line value");
+                } else {
+                    String line = handleFIND(directory, arguments).read(Integer.valueOf(arguments.get(1)));
+                    System.out.println(line);
+                }
             }
+        }else{
+            System.out.println("File not open");
         }
-
 
     }
 
@@ -211,8 +213,6 @@ public class Main {
                     System.out.println(((TwoLevelDirectory) directory).listAll());
                 }else{
                     System.out.println(current.get(0).listDirectory());
-//                    System.out.println(current.get(0).getName());
-//                    System.out.println(current.get(0).listDirectory());
                 }
                 break;
 
@@ -247,8 +247,13 @@ public class Main {
                 handleREAD(directory, arguments);
                 break;
             case "write": //filename, lineindex, newLine
-                handleFIND(directory, arguments).write(Integer.valueOf(arguments.get(1)), arguments.get(2));
-                System.out.println("The new line is " + handleFIND(directory, arguments).read(Integer.valueOf(arguments.get(1))));
+                if(String.valueOf(handleFIND(directory, arguments).getPermission()).equals("write")){
+                    handleFIND(directory, arguments).write(Integer.valueOf(arguments.get(1)), arguments.get(2));
+                    System.out.println("The new line is " + handleFIND(directory, arguments).read(Integer.valueOf(arguments.get(1))));
+                }else{
+                    System.out.println("This file has read permissions");
+                }
+
                 break;
             case "mkdir"://dirname
                 if(!arguments.get(0).contains("."))// Not a file,
@@ -268,9 +273,9 @@ public class Main {
 
             case "mv":// fromName toDir || fromPath toDir
                 ((TwoLevelDirectory)directory).move(arguments.get(0), arguments.get(1));
-//                handleMV(directory, arguments);
                     break;
-            case "cp":
+            case "cp":// fromName toDir || fromPath toDir
+                ((TwoLevelDirectory)directory).copy(arguments.get(0), arguments.get(1));
                 break;
             default:
                 System.out.println("not a valid command");

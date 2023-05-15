@@ -62,8 +62,6 @@ public class TwoLevelDirectory extends AbstractDirectory<SingleDirectory> {
         if(name.contains("/")){ //If a path
             String dirName = name.split("[/]")[0];;
             String fileName = name.split("[/]")[1];
-            System.out.println("dirname = " + dirName);
-            System.out.println("filename = " + fileName);
             findDir(dirName).remove(fileName);
         } else if (!name.contains(".")) { //If not a file
             removeDirectory(name);
@@ -136,7 +134,28 @@ public class TwoLevelDirectory extends AbstractDirectory<SingleDirectory> {
 
         }
 
+    }
+    // fromPath toDir || fromName toDir
+    public void copy(String from, String to){
+        if(from.contains("/") && !to.contains(".") && !to.contains("/")){//fromPath toDir, first is a path, second is not a path or file
+            String fromDirName = from.split("/")[0];
+            String fromFileName = from.split("/")[1];
 
+            FileOS fromFile = findDir(fromDirName).find(fromFileName);
+            FileOS toFile = findDir(to).find(fromFileName);
+
+            if(toFile == null && fromFile != null){//The file exists and no file is already created in the new space
+                findDir(to).addFile(fromFile);
+            }
+        }else if (from.contains(".")&& !from.contains("/") && !to.contains("/") && !to.contains(".")){//fromName toPath, first a file and second not a path or name
+            FileOS fromFile = find(from);
+            SingleDirectory toDir = findDir(to);
+
+            if(toDir != null && toDir.find(from) == null && fromFile != null){//The directoy exists and no file is already created in the new space, and the file to move is not null
+                toDir.addFile(fromFile);
+            }
+
+        }
     }
 
 

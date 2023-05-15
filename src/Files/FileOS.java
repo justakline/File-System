@@ -48,8 +48,7 @@ public class FileOS {
 
     //Read at the index with the new string
     public String read(int lineIndex){
-        if(isOpen) {
-
+        if(isOpen && lineIndex < body.size()) {
             return lineIndex + ".\t" + body.get(lineIndex);
         }
         return "";
@@ -132,6 +131,7 @@ public class FileOS {
     public Permission getPermission() {
         return permission;
     }
+
     public FileType getFileType() {
         return fileType;
     }
