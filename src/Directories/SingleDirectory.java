@@ -27,6 +27,10 @@ public class SingleDirectory extends AbstractDirectory<FileOS>{
 //        commands.addAll(Arrays.asList());
     }
 
+    public SingleDirectory(){
+        this.directory = new ArrayList<LinkedList<FileOS>>();
+    }
+
 
 
 

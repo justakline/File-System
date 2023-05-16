@@ -1,5 +1,6 @@
 import Directories.AbstractDirectory;
 import Directories.SingleDirectory;
+import Directories.TreeDirectory;
 import Directories.TwoLevelDirectory;
 import Files.FileOS;
 
@@ -9,7 +10,7 @@ import java.util.*;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        AbstractDirectory directory = new TwoLevelDirectory("myDir", "justa");
+        AbstractDirectory directory = new TwoLevelDirectory("root", "root");
 //        FileOS file = new FileOS("h", "justa", "write", "exe");
 //        directory.add("h.exe");
         Scanner scanner = new Scanner(System.in);
@@ -27,13 +28,14 @@ public class Main {
                     System.out.println("File not found");
                 } else if(e instanceof IndexOutOfBoundsException){
                     System.out.println("Not the right amount of arguments ");
-                    e.printStackTrace();
+
                 }
 
                 else {
                     System.out.println(e.toString());
-                    e.printStackTrace();
+
                 }
+                e.printStackTrace();
             }
 
         } while (!command.equals("exit"));
@@ -60,9 +62,13 @@ public class Main {
             handleSingleDirectory(directory, command, arguments);
         } else if (directory instanceof TwoLevelDirectory) {
             handleTwoTierDirectory(directory, command, arguments);
+        }else if(directory instanceof TreeDirectory){
+            handleTreeDirectory(directory, command, arguments);
         }
 
     }
+
+
 
     //If its more than one word(with arguements), split it, else its just a one word command like ls
     public static String createCommand(String line) {
@@ -277,6 +283,76 @@ public class Main {
             case "cp":// fromName toDir || fromPath toDir
                 ((TwoLevelDirectory)directory).copy(arguments.get(0), arguments.get(1));
                 break;
+            default:
+                System.out.println("not a valid command");
+        }
+    }
+    public static void handleTreeDirectory(AbstractDirectory directory, String command, List<String> arguments) {
+        switch (command) {
+            case "ls": // no args      list all
+                System.out.println(directory.listDirectory());
+                break;
+
+            case "rn": //oldfile, newfile
+                handleRN(directory, arguments);
+                break;
+            case "rm"://name
+                handleRM(directory, arguments);
+                break;
+//            case "touch": //newfilename
+//                handleTOUCH(directory, arguments);
+//                break;
+//            case "find"://filename
+//                System.out.println(handleFIND(directory, arguments) != null);
+//                break;
+//            case "open"://name
+//                handleFIND(directory, arguments).openFile();
+//                System.out.println("Opened " + arguments.get(0));
+//                break;
+//            case "close": //name
+//                handleFIND(directory, arguments).closeFile();
+//                System.out.println("Closed " + arguments.get(0));
+//                break;
+//            case "chown"://name, newowner
+//                handleFIND(directory, arguments).setOwner(arguments.get(1));
+//                System.out.println("Changed ownership of " + arguments.get(0) + " to " + arguments.get(1));
+//                break;
+//            case "chmod": //filename, permission
+//                handleCHMOD(directory, arguments);
+//                break;
+//            case "read": //filename, lineindex
+//                handleREAD(directory, arguments);
+//                break;
+//            case "write": //filename, lineindex, newLine
+//                if(String.valueOf(handleFIND(directory, arguments).getPermission()).equals("write")){
+//                    handleFIND(directory, arguments).write(Integer.valueOf(arguments.get(1)), arguments.get(2));
+//                    System.out.println("The new line is " + handleFIND(directory, arguments).read(Integer.valueOf(arguments.get(1))));
+//                }else{
+//                    System.out.println("This file has read permissions");
+//                }
+//
+//                break;
+            case "mkdir"://dirname
+                if(!arguments.get(0).contains("."))// Not a file,
+                    ((TreeDirectory)directory).add(arguments.get(0));
+                break;
+            case "cd..": //
+
+                ((TreeDirectory)directory).changeDirectoryBack();
+
+                break;
+            case "cd": //dirname
+                ((TreeDirectory)directory).changeDirectory(arguments.get(0));
+                break;
+            case "all":
+                System.out.println(((TreeDirectory)directory).listAll());
+                break;
+//            case "mv":// fromName toDir || fromPath toDir
+//                ((TwoLevelDirectory)directory).move(arguments.get(0), arguments.get(1));
+//                break;
+//            case "cp":// fromName toDir || fromPath toDir
+//                ((TwoLevelDirectory)directory).copy(arguments.get(0), arguments.get(1));
+//                break;
             default:
                 System.out.println("not a valid command");
         }

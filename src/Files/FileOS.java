@@ -136,4 +136,8 @@ public class FileOS {
         return fileType;
     }
 
+    public String getOwner(){
+        return owner;
+    }
+
 }
