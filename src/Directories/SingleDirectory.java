@@ -5,11 +5,8 @@ package Directories;
 
 import Files.FileOS;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class SingleDirectory extends AbstractDirectory<FileOS>{
 
@@ -77,7 +74,7 @@ public class SingleDirectory extends AbstractDirectory<FileOS>{
         for (LinkedList<FileOS> list : directory){
             for(FileOS file: list){
                 String fullName = file.getName()+ "." + file.getType();
-                System.out.println("printing " + fullName);
+
                 if(fullName.equals( name)){ //Split into name and type, so recombine together
 
                     return file;

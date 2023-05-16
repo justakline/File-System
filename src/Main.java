@@ -10,7 +10,7 @@ import java.util.*;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        AbstractDirectory directory = new TwoLevelDirectory("root", "root");
+        AbstractDirectory directory = new SingleDirectory("root", "root");
 //        FileOS file = new FileOS("h", "justa", "write", "exe");
 //        directory.add("h.exe");
         Scanner scanner = new Scanner(System.in);
@@ -20,7 +20,6 @@ public class Main {
             String line = scanner.nextLine();
             command = createCommand(line);
             arguments = processArguments(line);
-            System.out.println(command + arguments);
             try{
                 executeCommand(directory, command, arguments);
             }catch(Exception e){
@@ -35,7 +34,6 @@ public class Main {
                     System.out.println(e.toString());
 
                 }
-                e.printStackTrace();
             }
 
         } while (!command.equals("exit"));
@@ -79,7 +77,6 @@ public class Main {
     }
 
     public static void handleRN(AbstractDirectory directory, List<String> arguments) {
-        System.out.println(handleFIND(directory, arguments));
 
         if (arguments.size() == 1) {  //Rename the main directory
             directory.rename(arguments.get(0));

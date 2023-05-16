@@ -2,7 +2,6 @@ package Files;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class FileOS {
@@ -82,7 +81,6 @@ public class FileOS {
             }else {// nothing in the list yet, so add
                 body.add(newLine);
             }
-            System.out.println("working");
 
             this.size += newLine.length();
         }
